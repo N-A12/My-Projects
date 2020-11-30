@@ -1,0 +1,100 @@
+
+#My Own Website user interaction log in and sign up using database without modules and packages
+#Code by : nicko
+
+#database
+user_data = {1}
+pass_data = []
+
+#homepage
+def home():
+    print('\n', ' '*30 , 'WELCOME TO MY WEBSITE')
+    print("*Type 'L' to Log In \n*Type 'S' to Sign Up"   )
+    while True:
+        answer = input('    ')
+        if answer == 'L':
+            login()
+            break
+        elif answer == 'S':
+            signup()
+            break
+        else:
+            continue
+
+#signup
+def signup():
+    #input
+    username = input('Username:   ')
+    if not len(username) >= 5 or not len(username) <= 20 :
+        print('Username must contain 5-20 characters')
+        signup()
+    if username in user_data:
+        print('\n   ! Username Already Taken !\n')
+        signup()
+    validate()
+    user_data.add(username)
+    while True:
+        print("*Type 'H' to return to Homepage \n*Type 'L' to Log In now")
+        log_response = input('    ')
+        if log_response == 'L':
+            login()
+            break
+        elif log_response == 'H':
+            home()
+            break
+        else:
+            continue
+
+#validate_password
+def validate():
+    #restriction_variables
+    numbers = '1234567890'
+    symbols = '!@#$%^&*()_+-=}{|[\|;:/.?,><`~"'
+    password = input('Password:   ')
+    character = len(password)
+    if character in range(5,16):
+        if len(set(password) & set(numbers)) >= 1:
+            if len(set(password) & set(symbols)) >= 1:
+                print('   ✅ Password contains 5-15 characters ')
+                print('   ✅ Password contains at least a digit ')
+                print('   ✅ Password contains at least a symbol ')
+                pass_data.append(password)
+            else:
+                print('   ✅ Password must contain 5-15 characters')
+                print('   ✅ Password must contain at least a number')
+                print('    ✖ Password must contain at least a symbol')
+                validate()
+        else:
+            print('    ✅ Password must contain 5-15 characters')
+            print('     ✖ Password must contain at least a number')
+            print('     ✖ Password must contain at least a symbol')
+            validate()
+    else:
+        print('    ✖ Password must contain 5-15 characters')
+        print('    ✖ Password must contain at least a number')
+        print('    ✖ Password must contain at least a symbol')
+        validate()
+
+#login
+def login():
+    login_username = input('Username:   ')
+    login_password = input('Password:   ')
+    if login_username not in user_data or login_password not in pass_data:
+        print('\n    ! Account Does NOT Exist !\n')
+        print("*Type 'S' to Sign up \n*Type 'T' to try again")
+        while True:
+            respond = input('    ')
+            if respond == 'S':
+                signup()
+                break
+            elif respond == 'T':
+                login()
+                break
+            else:
+                continue
+    else:
+        print('\n Log In Complete \n Logging In...')
+
+
+home()
+print('')
